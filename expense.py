@@ -25,18 +25,20 @@ expense_questions = [
 ]
 
 
-
 def new_expense(*args):
     infos = prompt(expense_questions)
     with open('expense_report.csv', 'a', newline = '') as ef:
         mywriter = csv.writer(ef, delimiter = ',')
         line = []
         for key,value  in infos.items():
+            #call user verification if on spender key
             if key == "spender":
                 b = check_user(value)
+            #add spenders with a delimiter to my new expense details if they exist
             if key == "spenders" and value != "":
                 line.append("|")
                 line.append(value)
+            #add value if not on spenders key
             if key != "spenders":
                 line.append(value)
         if b:
@@ -47,6 +49,8 @@ def new_expense(*args):
     print("Expense not added !")
     return False
 
+
+#check if the spender is a user
 def check_user(name):
     b = False
     with open('users.csv', 'r', newline = '') as uf:
